@@ -1,0 +1,119 @@
+//Test 1
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr");
+
+WebElement linkElement;
+driver.findElement(By.partialLinkText("Toutes les actualités"));
+
+
+// Test 2
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr");
+
+WebElement linkElement;
+linkElement = link "Toutes les actualités" "http://www.imt-atlantique.fr/fr/actualites" "";
+linkElement.click();
+driver.findElement(By.partialLinkText("Accueil"));
+
+// Test 3
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr");
+
+WebElement linkElement;
+linkElement = link "Toutes les actualités" "http://www.imt-atlantique.fr/fr/actualites" "";
+webElement.click();
+
+WebElement imageWebElement;
+imageWebElement = driver.findElement(By.altImage("Accueil"));
+imageWebElement.click();
+driver.findElement(By.partialLinkText("Toutes les actualités"));
+
+// Test 4
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr/rechercher");
+
+WebElement searchWebElement;
+searchWebElement = driver.findElement(By.id("search"));
+searchWebElement.insert("Donald Trump");
+
+WebElement filterWebElement;
+filterWebElement = driver.findElement(By.id("apply_filter")):
+filterWebElement.click();
+driver.findElement(By.partialText("Aucun résultat ne correspond à votre recherche"));
+
+// Test 5
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr/formation/trouver-ma-formation");
+
+driver.clearCheckBox();
+WebElement checkBoxWebElement;
+
+checkBoxWebElement = driver.findElement(By.id("checkbox_anglais"));
+checkBoxWebElement.check();
+
+checkBoxWebElement = driver.findElement(By.id("checkbox_a_domicile"));
+checkBoxWebElement.check();
+
+checkBoxWebElement= driver.findElement(By.id("checkbox_temps_plein"));
+checkBoxWebElement.check();
+
+checkBoxWebElement = driver.findElement(By.id("apply_criteria"));
+checkBoxWebElement.click();
+driver.findElement(By.partialText("No found course matching your criteria."));
+
+
+// Test 6
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr/rechercher");
+
+WebElement webElement;
+webElement = driver.findElement(By.id("search"));
+webElement.insert("2007");
+
+webElement = driver.findElement(By.nameTag("combobox"));
+webElement.select("Le mois dernier");
+
+webElement = driver.findElement(By.id("apply_filter"));
+webElement.click();
+
+driver.findElement(By.partialText("Aucun résultat ne correspond à votre recherche"));
+
+// Test 7
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr");
+
+WebElement webElement;
+webElement = driver.findFirstElement(By.class("actu_home_ctner_inner_cell1_titre"));
+webElement.click();
+
+driver.findFirstElement(By.class("actu_home_ctner_inner_cell1_titre"));
+
+
+// Test 8
+WebDriver driver;
+driver = FirefoxDriver;
+driver.get("http://www.imt-atlantique.fr/fr");
+
+
+WebElement webElement;
+webElement = driver.findSecondElement(By.class("actu_home_ctner_inner_cell1_titre"));
+String title;
+title = ;
+driver.get("http://www.imt-atlantique.fr/rechercher");
+
+webElement = driver.findElement(By.id("search"));
+webElement.insert(webElement.getTitle());
+
+webElement = driver.findElement(By.id("apply_filter"));
+webElement.click();
+
+webElement = driver.findElement(By.url("http://www.imt-atlantique.fr/fr"));
+webElement.click();
+
