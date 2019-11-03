@@ -1,0 +1,170 @@
+grammar org.xtext.example.Browser with org.eclipse.xtext.common.Terminals
+
+generate browser "http://www.xtext.org/example/Browser"
+
+Program:
+	lines += Lines*
+;
+
+Lines:
+	Declaration | Affectation | FunctionCall | CheckContainsLink | CheckContainsText | FindProperty | FindFirstProperty | FindSecondProperty | GetTitle
+;
+
+Declaration:
+	type=Type var=Variable ';'
+;
+
+Type:
+	type=('WebDriver' | 'WebElement' | 'String')
+;
+
+Variable:
+	name=ID | URL
+;
+
+Affectation:
+	ref=VarReference '=' expr=Expression ';'
+;
+
+VarReference:
+	val=[Variable]
+;
+
+FunctionCall:
+	Go | Contains | Interractions
+;
+
+Expression:
+	WebDriverType | WebElementType | STRING | URL
+;
+
+
+WebDriverType:
+	'FirefoxDriver' | 'ChromeDriver' | 'InternetExplorerDriver'
+;
+
+WebElementType:
+	Link | Input | Button | Text | Checkbox | Combobox | Image
+;
+
+WebElementVarReference:
+	VarReference
+;
+
+WebDriverVarReference:
+	VarReference
+;
+
+Link:
+	'link' name=STRING url=STRING class=STRING
+;
+
+Input:
+	'input' name=STRING value=STRING type=STRING class=STRING
+;
+
+Button:
+	'button' name=STRING value=WebElementVarReference class=STRING
+;
+
+Text:
+	'text' name=STRING value=WebElementVarReference class=STRING
+;
+
+Checkbox:
+	'checkbox' name=STRING value=ListValue class=STRING
+;
+
+Combobox:
+	'combobox' name=STRING value=ListValue class=STRING
+;
+
+ListValue:
+	(STRING)*
+;
+
+Image:
+	'image' value=WebElementVarReference class=STRING
+;
+
+
+Go:
+	val=WebDriverVarReference '.get(' url=STRING ');' 
+;
+
+Contains:
+	val=WebElementVarReference '.contains(' param=STRING ');'
+;
+
+Interractions:
+	Click | ReadElement | Insert | CheckCheckbox | ClearCheckbox | SelectCombobox
+;
+
+Click:
+	val=WebElementVarReference '.click();'
+;
+
+ReadElement:
+	ref=VarReference '=' val=WebElementVarReference '.readElement();'
+;
+
+CheckContainsLink:
+	val=WebDriverVarReference '.checkContainsLink(By.' name=ID '(' param=STRING ')' ');'
+;
+
+CheckContainsText:
+	val=WebDriverVarReference '.checkContainsText(By.' name=ID '(' param=STRING ')' ');'
+;
+
+FindProperty:
+	ref=VarReference '=' val=WebDriverVarReference '.findElement(By.' name=ID '(' param=STRING ')' ');'
+;
+
+FindFirstProperty returns WebElementVarReference:
+	ref=VarReference '=' val=WebDriverVarReference '.findFirstElement(By.' name=ID '(' param=STRING ')' ');'
+;
+
+FindSecondProperty returns WebElementVarReference:
+	ref=VarReference '=' val=WebDriverVarReference '.findSecondElement(By.' name=ID '(' param=STRING ')' ');'
+;
+
+GetTitle returns STRING:
+	val=WebElementVarReference '.getTitle()'
+;
+
+Insert:
+	val=WebElementVarReference '.insert(' (param=STRING)? | (ref=VarReference)? ');'
+;
+
+CheckCheckbox:
+	val=WebElementVarReference '.check();'
+;
+
+ClearCheckbox:
+	val=WebDriverVarReference '.clearCheckBox();'
+;
+
+SelectCombobox:
+	val=WebElementVarReference '.select(' param=STRING ');'
+;
+
+terminal PROTOCOL:
+	('http' | 'https') '://'
+;
+
+terminal EXTENTION:
+	('fr' | 'com')
+;
+
+terminal DOMAIN:
+	STRING ('.' STRING)* '.' EXTENTION
+;
+
+terminal PATH:
+	(('/') | ('/' STRING)*)
+;
+
+terminal URL:
+	PROTOCOL DOMAIN PATH
+;
+
