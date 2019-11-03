@@ -2,17 +2,12 @@ grammar org.xtext.example.mydsl.Browser with org.eclipse.xtext.common.Terminals
 
 generate browser "http://www.xtext.org/example/mydsl/Browser"
 
-
 Program:
 	lines += Lines*
 ;
 
 Lines:
-	Declaration | Affectation | FunctionCall | FindProperty | FindFirstProperty | FindSecondProperty | GetTitle
-;
-
-FunctionCall:
-	Go | Contains | Interractions
+	Declaration | Affectation | FunctionCall | CheckContainsLink | CheckContainsText | FindProperty | FindFirstProperty | FindSecondProperty | GetTitle
 ;
 
 Declaration:
@@ -23,9 +18,20 @@ Type:
 	type=('WebDriver' | 'WebElement' | 'String')
 ;
 
+Variable:
+	name=ID | URL
+;
 
 Affectation:
 	ref=VarReference '=' expr=Expression ';'
+;
+
+VarReference:
+	val=[Variable]
+;
+
+FunctionCall:
+	Go | Contains | Interractions
 ;
 
 Expression:
@@ -37,8 +43,8 @@ WebDriverType:
 	'FirefoxDriver' | 'ChromeDriver' | 'InternetExplorerDriver'
 ;
 
-VarReference:
-	val=[Variable]
+WebElementType:
+	Link | Input | Button | Text | Checkbox | Combobox | Image
 ;
 
 WebElementVarReference:
@@ -47,15 +53,6 @@ WebElementVarReference:
 
 WebDriverVarReference:
 	VarReference
-;
-
-Variable:
-	name=ID | URL
-;
-
-
-WebElementType:
-	Link | Input | Button | Text | Checkbox | Combobox | Image
 ;
 
 Link:
@@ -100,23 +97,35 @@ Contains:
 ;
 
 Interractions:
-	Click | Insert | CheckCheckbox | ClearCheckbox | SelectCombobox
+	Click | ReadElement | Insert | CheckCheckbox | ClearCheckbox | SelectCombobox
 ;
 
 Click:
 	val=WebElementVarReference '.click();'
 ;
 
+ReadElement:
+	ref=VarReference '=' val=WebElementVarReference '.readElement();'
+;
+
+CheckContainsLink:
+	val=WebDriverVarReference '.checkContainsLink(By.' name=ID '(' param=STRING ')' ');'
+;
+
+CheckContainsText:
+	val=WebDriverVarReference '.checkContainsText(By.' name=ID '(' param=STRING ')' ');'
+;
+
 FindProperty:
-	val=WebDriverVarReference '.findElement(By.' name=ID '(' param=STRING ')' ');'
+	ref=VarReference '=' val=WebDriverVarReference '.findElement(By.' name=ID '(' param=STRING ')' ');'
 ;
 
 FindFirstProperty returns WebElementVarReference:
-	val=WebDriverVarReference '.findFirstElement(By.' name=ID '(' param=STRING ')' ');'
+	ref=VarReference '=' val=WebDriverVarReference '.findFirstElement(By.' name=ID '(' param=STRING ')' ');'
 ;
 
 FindSecondProperty returns WebElementVarReference:
-	val=WebDriverVarReference '.findSecondElement(By.' name=ID '(' param=STRING ')' ');'
+	ref=VarReference '=' val=WebDriverVarReference '.findSecondElement(By.' name=ID '(' param=STRING ')' ');'
 ;
 
 GetTitle returns STRING:
@@ -124,7 +133,7 @@ GetTitle returns STRING:
 ;
 
 Insert:
-	val=WebElementVarReference '.insert(' name=ID ');'
+	val=WebElementVarReference '.insert(' (param=STRING)? | (ref=VarReference)? ');'
 ;
 
 CheckCheckbox:
@@ -138,9 +147,6 @@ ClearCheckbox:
 SelectCombobox:
 	val=WebElementVarReference '.select(' param=STRING ');'
 ;
-
-
-
 
 terminal PROTOCOL:
 	('http' | 'https') '://'
@@ -161,4 +167,3 @@ terminal PATH:
 terminal URL:
 	PROTOCOL DOMAIN PATH
 ;
-
