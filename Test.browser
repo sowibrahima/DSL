@@ -1,120 +1,83 @@
 //Test 1
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr");
-driver.checkContainsLink(By.partialLinkText("Toutes les actualités"));
-
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr"
+checkContains Link partialText "Toutes les actualités"
 
 // Test 2
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr");
+set FirefoxDriver;
+get "http://www.imt-atlantique.fr/fr"
 
-WebElement linkElement;
-linkElement = link "Toutes les actualités" "http://www.imt-atlantique.fr/fr/actualites" "";
-linkElement.click();
-driver.checkContainsLink(By.partialLinkText("Accueil"));
+findElement partialLinkText "Toutes les actualités" 0 click
+
+checkContains Link partialText "Accueil"
 
 // Test 3
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr");
+set FirefoxDriver;
+get "http://www.imt-atlantique.fr/fr"
 
-WebElement linkElement;
-linkElement = link "Toutes les actualités" "http://www.imt-atlantique.fr/fr/actualites" "";
-webElement.click();
+findElement partialText "Toutes les actualités" "http://www.imt-atlantique.fr/fr/actualites" 0 click
 
-WebElement imageWebElement;
-imageWebElement = driver.findElement(By.altImage("Accueil"));
-imageWebElement.click();
-driver.checkContainsLink(By.partialLinkText("Toutes les actualités"));
+findElement altImage "Accueil" 0 click
+
+checkContains Link partialText "Toutes les actualités"
 
 // Test 4
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr/rechercher");
+set FirefoxDriver;
+get "http://www.imt-atlantique.fr/fr/rechercher"
 
-WebElement searchWebElement;
-searchWebElement = driver.findElement(By.id("search"));
-searchWebElement.insert("Donald Trump");
+findElement id "search" 0 insert "Donald Trump"
 
-WebElement buttonFilterElement;
-buttonFilterElement = driver.findElement(By.id("apply_filter"));
-buttonFilterElement.click();
-driver.checkContainsText(By.partialText("Aucun résultat ne correspond à votre recherche"));
+findElement partialText "Appliquer les filtres" 0 click
+
+checkContains Text partialText "Aucun résultat ne correspond à votre recherche"
 
 // Test 5
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr/formation/trouver-ma-formation");
+set FirefoxDriver;
+get "http://www.imt-atlantique.fr/fr/formation/trouver-ma-formation"
 
-driver.clearCheckBox();
-WebElement checkBoxWebElement;
+findElement nameTag "checkbox" unCheckAll
 
-checkBoxWebElement = driver.findElement(By.id("checkbox_anglais"));
-checkBoxWebElement.check();
+findElement partialText "Anglais" 0 check
+findElement partialText "A domicile" 0 check
+findElement partialText "Temps plein" 0 check
 
-checkBoxWebElement = driver.findElement(By.id("checkbox_a_domicile"));
-checkBoxWebElement.check();
-
-checkBoxWebElement= driver.findElement(By.id("checkbox_temps_plein"));
-checkBoxWebElement.check();
-
-WebElement buttonWebElement;
-buttonWebElement = driver.findElement(By.id("apply_criteria"));
-buttonWebElement.click();
-driver.checkContainsText(By.partialText("No found course matching your criteria."));
+findElement partialText "Appliquer les critères" 0 click
+checkContains Text partialText "No found course matching your criteria."
 
 
 // Test 6
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr/rechercher");
+set FirefoxDriver;
+get("http://www.imt-atlantique.fr/fr/rechercher");
 
-WebElement webElement;
-webElement = driver.findElement(By.id("search"));
-webElement.insert("2007");
+findElement id "search" 0 insert "2007"
 
-webElement = driver.findElement(By.nameTag("combobox"));
-webElement.select("Le mois dernier");
+findElement nameTag "combobox" 0 select partialText "Le mois dernier"
 
-WebElement buttonFilterElement;
-buttonFilterElement = driver.findElement(By.id("apply_filter"));
-buttonFilterElement.click();
+findElement partialText "Appliquer les filtres" 0 click
 
-driver.checkContainsText(By.partialText("Aucun résultat ne correspond à votre recherche"));
+checkContains Text partialText "Aucun résultat ne correspond à votre recherche"
 
 // Test 7
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr");
+set FirefoxDriver;
+get("http://www.imt-atlantique.fr/fr");
 
-WebElement webElement;
-webElement = driver.findFirstElement(By.class("actu_home_ctner_inner_cell1_titre"));
-webElement.click();
+String title = findElement class "actu_home_ctner_inner_cell1_titre" 0 read "title"
+findElement class "actu_home_ctner_inner_cell1_titre" 0 click
 
-driver.checkContainsText(By.class("actu_home_ctner_inner_cell1_titre"));
-
+checkContains Text partialText title
 
 // Test 8
-WebDriver driver;
-driver = FirefoxDriver;
-driver.get("http://www.imt-atlantique.fr/fr");
+set FirefoxDriver;
+get "http://www.imt-atlantique.fr/fr"
 
+String title = findElement class "actu_home_ctner_inner_cell1_titre" 1 read "title"
+String url = findElement class "actu_home_ctner_inner_cell1_titre" 1 read "link"
 
-WebElement webElement;
-webElement = driver.findSecondElement(By.class("actu_home_ctner_inner_cell1_titre"));
-String title;
-title = webElement.readElement();
+get "http://www.imt-atlantique.fr/rechercher"
 
-driver.get("http://www.imt-atlantique.fr/rechercher");
+findElement id "search" 0 insert title
 
-webElement = driver.findElement(By.id("search"));
-webElement.insert(title);
+findElement partialText "Appliquer les filtres" 0 click
 
-WebElement buttonFilterElement;
-buttonFilterElement = driver.findElement(By.id("apply_filter"));
-buttonFilterElement.click();
-
-driver.checkContainsLink(By.url("http://www.imt-atlantique.fr/fr"));
+checkContains Link partialLink url
 
