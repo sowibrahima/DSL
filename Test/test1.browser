@@ -1,0 +1,5 @@
+//Test 1
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr"
+checkContains Link partialText "Toutes les actualit¨¦s"
+
