@@ -1,0 +1,9 @@
+// Test 7
+program Test7
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr"
+String title 
+title = readElement class "actu_home_ctner_inner_cell1_titre" 0 "title"
+findElements class "actu_home_ctner_inner_cell1_titre" 0 click
+
+checkContains Text partialText title

@@ -1,0 +1,17 @@
+// Test 8
+program Test8
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr"
+
+String title
+title = readElement class "actu_home_ctner_inner_cell1_titre" 1 "title"
+String url
+url = readElement class "actu_home_ctner_inner_cell1_titre" 1 "link"
+
+get "http://www.imt-atlantique.fr/rechercher"
+
+findElements id "search" 0 insert title
+
+findElements partialText "Appliquer les filtres" 0 click
+
+checkContains Link partialLink url

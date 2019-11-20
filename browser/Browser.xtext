@@ -1,0 +1,116 @@
+grammar org.xtext.example.Browser with org.eclipse.xtext.common.Terminals
+
+generate browser "http://www.xtext.org/example/Browser"
+
+Program:
+	'program' name=ID
+	'set' set=WebDriverType
+	lines += FunctionCall*
+;
+
+FunctionCall:
+	Declaration | Affectation | Get | Method | FindElements |CheckContains | Read
+;
+
+Declaration:
+	type=Type variable=Variable
+;
+
+Type:
+	type='String'
+;
+
+Variable:
+	name=ID
+;
+
+VarReference:
+	val=[Variable]
+;
+
+Affectation:
+	variable=VarReference '=' expr=Expression
+;
+
+Expression:
+	STRING
+;
+
+Method:
+	Click | Insert | {Method} UnCheckAll | Check | UnCheck | Select
+;
+
+WebDriverType:
+	'firefox' | 'chrome'
+;
+
+WebElementType:
+	'Link' | 'Text'
+;
+WebElementAttribute:
+	FindElementsOption
+;
+
+FindElementsOption:
+	'partialText' | 'partialLinkText' | 'id' | 'tagName' | 'altImage' | 'className' | 'name' | 'cssSelector'
+;
+
+Get:
+	'get' url=STRING 
+;
+
+Click:
+	position=INT 'click'
+;
+
+Insert:
+	position=INT 'insert' (param=STRING|ref=VarReference)
+;
+
+UnCheckAll:
+	'unCheckAll'
+;
+
+Check:
+	position=INT 'check'
+;
+
+UnCheck:
+	position=INT 'unCheck'
+;
+
+Select:
+	position=INT 'select' option=FindElementsOption param=STRING
+;
+
+CheckContains:
+	'checkContains' attribute=WebElementAttribute (variable=VarReference|param=STRING)
+;
+
+Read :
+	variable=VarReference '=' 'readElement' option=FindElementsOption value=STRING position=INT param=STRING
+;
+
+FindElements:
+	'findElements' option=FindElementsOption (variable=VarReference|param=STRING) method=Method
+;
+
+terminal PROTOCOL:
+	('http' | 'https') '://'
+;
+
+terminal EXTENTION:
+	('fr' | 'com')
+;
+
+terminal DOMAIN:
+	STRING ('.' STRING)* '.' EXTENTION
+;
+
+terminal PATH:
+	(('/') | ('/' STRING)*)
+;
+
+terminal URL:
+	PROTOCOL DOMAIN PATH
+;

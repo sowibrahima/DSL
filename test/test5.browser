@@ -1,0 +1,13 @@
+// Test 5
+program Test5
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr/formation/trouver-ma-formation"
+
+findElements nameTag "checkbox" unCheckAll
+
+findElements partialText "Anglais" 0 check
+findElements partialText "A domicile" 0 check
+findElements partialText "Temps plein" 0 check
+
+findElements partialText "Appliquer les crit��res" 0 click
+checkContains Text partialText "No found course matching your criteria."

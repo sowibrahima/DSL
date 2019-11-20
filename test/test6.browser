@@ -1,0 +1,12 @@
+// Test 6
+program Test6
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr/rechercher"
+
+findElements id "search" 0 insert "2007"
+
+findElements nameTag "combobox" 0 select partialText "Le mois dernier"
+
+findElements partialText "Appliquer les filtres" 0 click
+
+checkContains Text partialText "Aucun r��sultat ne correspond �� votre recherche"

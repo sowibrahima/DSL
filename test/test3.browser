@@ -1,0 +1,10 @@
+// Test 3
+program Test1
+set FirefoxDriver
+get "http://www.imt-atlantique.fr/fr"
+
+findElements partialText "Toutes les actualit��s" 0 click
+
+findElements altImage "Accueil" 0 click
+
+checkContains Link partialText "Toutes les actualit��s"

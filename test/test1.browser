@@ -1,0 +1,5 @@
+//Test 1
+program Test1
+set chrome
+get "http://www.imt-atlantique.fr/fr"
+checkContains partialLinkText "Toutes les actualitées" 
