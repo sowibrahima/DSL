@@ -1,10 +1,10 @@
 // Test 4
 program Test4
-set FirefoxDriver
+set chrome
 get "http://www.imt-atlantique.fr/fr/rechercher"
 
 findElements id "search" 0 insert "Donald Trump"
 
-findElements partialText "Appliquer les filtres" 0 click
+findElements partialLinkText "Appliquer les filtres" 0 click
 
-checkContains Text partialText "Aucun r��sultat ne correspond �� votre recherche"
+checkContains partialLinkText "Aucun résultat ne correspond à votre recherche"

@@ -15,7 +15,7 @@ import org.xtext.example.browser.Get
 import org.xtext.example.browser.Insert
 import org.xtext.example.browser.Program
 import org.xtext.example.browser.FindElements
-
+//import org.xtext.example.browser.Clear
 /**
  * Generates code from your model files on save.
  * 
@@ -82,6 +82,10 @@ class BrowserGenerator extends AbstractGenerator {
     	.get(«insert.position»).insert(«IF insert.ref !== null»«insert.ref»«ELSE»"«insert.param»"«ENDIF»);
     	'''
     	
-    
+    /**
+    def dispatch compileMethod(Clear clear) '''
+    	.get(«clear.position»).clear();
+    	'''
+	*/
     
 }

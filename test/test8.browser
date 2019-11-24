@@ -1,6 +1,6 @@
 // Test 8
 program Test8
-set FirefoxDriver
+set chrome
 get "http://www.imt-atlantique.fr/fr"
 
 String title
@@ -14,4 +14,4 @@ findElements id "search" 0 insert title
 
 findElements partialText "Appliquer les filtres" 0 click
 
-checkContains Link partialLink url
+checkContains partialLinkText url

@@ -37,7 +37,7 @@ Expression:
 ;
 
 Method:
-	Click | Insert | {Method} UnCheckAll | Check | UnCheck | Select
+	Click | Insert | {Method} Clear | Check | UnCheck | Select
 ;
 
 WebDriverType:
@@ -67,8 +67,8 @@ Insert:
 	position=INT 'insert' (param=STRING|ref=VarReference)
 ;
 
-UnCheckAll:
-	'unCheckAll'
+Clear:
+	'clear'
 ;
 
 Check:
