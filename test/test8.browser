@@ -1,17 +1,20 @@
 // Test 8
 program Test8
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr"
 
+waitPageLoad
+findElements className "agree-button" 0 click
+
 String title
-title = readElement class "actu_home_ctner_inner_cell1_titre" 1 "title"
+title = readElement className "actu_home_ctner_inner_cell1_titre" 1 "getText"
 String url
-url = readElement class "actu_home_ctner_inner_cell1_titre" 1 "link"
+url = readElement className "actu_home_ctner_inner_cell1_titre" 1 "getAttribute" "href"
 
 get "http://www.imt-atlantique.fr/rechercher"
 
-findElements id "search" 0 insert title
+findElements id "edit-search-api-fulltext" 0 insert title
 
-findElements partialText "Appliquer les filtres" 0 click
+findElements xpath "//input[@value='Appliquer les filtres']" 0 click
 
-checkContains partialLinkText url
+print checkContains partialLinkText url

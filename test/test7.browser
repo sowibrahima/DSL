@@ -1,9 +1,10 @@
 // Test 7
 program Test7
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr"
+waitPageLoad
+findElements className "agree-button" 0 click
 String title 
-title = readElement class "actu_home_ctner_inner_cell1_titre" 0 "title"
-findElements class "actu_home_ctner_inner_cell1_titre" 0 click
-
-checkContains partialLinkText title
+title = readElement className "actu_home_ctner_inner_cell1_titre" 0 "getText"
+findElements className "actu_home_ctner_inner_cell1_titre" 0 click
+print checkContains partialLinkText title

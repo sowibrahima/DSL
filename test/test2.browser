@@ -1,6 +1,8 @@
 // Test 2
 program Test2
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr"
-findElements partialLinkText "Toutes les actualitÃ©es" 0 click
-checkContains partialLinkText "Accueil"
+waitPageLoad
+findElements className "agree-button" 0 click
+findElements partialLinkText "Trouver ma formation" 0 click
+print checkContains xpath "//*[contains(text(), 'Définir les critères')]"

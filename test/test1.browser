@@ -1,5 +1,8 @@
 //Test 1
 program Test1
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr"
-checkContains partialLinkText "Toutes les actualitées" 
+waitPageLoad
+
+findElements className "agree-button" 0 click
+print checkContains partialLinkText "Trouver ma formation"

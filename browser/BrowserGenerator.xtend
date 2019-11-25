@@ -19,6 +19,11 @@ import org.xtext.example.browser.Read
 import org.xtext.example.browser.Type
 import org.xtext.example.browser.Variable
 import org.xtext.example.browser.VarReference
+import org.xtext.example.browser.WaitPageLoad
+import org.xtext.example.browser.Print
+import org.xtext.example.browser.UnCheck
+import org.xtext.example.browser.UnCheckAll
+import org.xtext.example.browser.Check
 
 /**
  * Generates code from your model files on save.
@@ -45,54 +50,69 @@ class BrowserGenerator extends AbstractGenerator {
         import org.openqa.selenium.Keys;
         import org.openqa.selenium.WebDriver;
         import org.openqa.selenium.WebElement;
-        import org.openqa.selenium.Â«p.setÂ».Â«p.set.toFirstUpper()Â»Driver;
+        import org.openqa.selenium.«p.set».«p.set.toFirstUpper()»Driver;
+        import org.openqa.selenium.support.ui.ExpectedConditions;
+        import org.openqa.selenium.support.ui.WebDriverWait;
         
-        public class Â«p.nameÂ» {
+        public class «p.name» {
         	public static void main(String[] args){
-        		WebDriver driver = new Â«p.set.toFirstUpper()Â»Driver();
-        		Â«FOR l : p.linesÂ»
-        		Â«l.compileFuncÂ»
-				Â«ENDFORÂ»
+        		WebDriver driver = new «p.set.toFirstUpper()»Driver();
+        		«FOR l : p.lines»
+        		«l.compileFunc»;
+				«ENDFOR»
         	}
         }
     	'''
     
+    def dispatch compileFunc(WaitPageLoad waitPage) '''
+    	WebDriverWait wait = new WebDriverWait(driver, 10);
+    	wait.until(ExpectedConditions.jsReturnsValue("return document.readyState==\"complete\";"))'''
+    	
+    def dispatch compileFunc(Print print) '''
+    	System.out.println(«IF print.contains !== null»«print.contains.compileFunc»«ELSE»"«print.ref.compileVarReference»"«ENDIF»)'''
+    
 	def dispatch compileFunc(Declaration declaration) '''
-    	Â«declaration.type.compileTypeÂ» Â«declaration.variable.compileVariableÂ»;
-    	'''
+    	«declaration.type.compileType» «declaration.variable.compileVariable»'''
     	
-    def compileType(Type type) '''Â«type.typeÂ»'''
-    
-    def compileVariable(Variable variable) '''Â«variable.nameÂ»'''
-    
-    def compileVarReference(VarReference ref) '''Â«ref.value.compileVariableÂ»'''
-    	
-	def dispatch compileFunc(Affectation affectation) '''
-    	Â«affectation.variable.compileVarReferenceÂ» = Â«affectation.exprÂ»;
-    	'''
+    def dispatch compileFunc(Affectation affectation) '''
+    	«affectation.variable.compileVarReference» = «affectation.expr»'''
     	
     def dispatch compileFunc(Get get) '''
-    	driver.get(Â«IF get.variable !== nullÂ»Â«get.variable.compileVarReferenceÂ»Â«ELSEÂ»"Â«get.paramÂ»"Â«ENDIFÂ»);
-    	'''
+    	driver.get(«IF get.variable !== null»«get.variable.compileVarReference»«ELSE»"«get.param»"«ENDIF»)'''
   	
   	def dispatch compileFunc(CheckContains contains) '''
-    	driver.findElement(By.Â«contains.attributeÂ»(Â«IF contains.variable !== nullÂ»Â«contains.variable.compileVarReferenceÂ»Â«ELSEÂ»"Â«contains.paramÂ»"Â«ENDIFÂ»));	    
-    	'''
+    	driver.findElement(By.«contains.attribute»(«IF contains.variable !== null»«contains.variable.compileVarReference»«ELSE»"«contains.param»"«ENDIF»))'''
   	
   	def dispatch compileFunc(FindElements elem) '''
-    	driver.findElements(By.Â«elem.optionÂ»(Â«IF elem.variable !== nullÂ»Â«elem.variable.compileVarReferenceÂ»Â«ELSEÂ»"Â«elem.paramÂ»"Â«ENDIFÂ»))Â«elem.method.compileMethodÂ»
-    	'''
+    	driver.findElements(By.«elem.option»(«IF elem.variable !== null»«elem.variable.compileVarReference»«ELSE»"«elem.param»"«ENDIF»))«elem.method.compileMethod»'''
     	
   	def dispatch compileFunc(Read read) '''
-  		Â«read.variable.compileVarReferenceÂ» = driver.findElements(By.Â«read.optionÂ»(Â«IF read.param1 !== nullÂ»Â«read.param1.compileVarReferenceÂ»Â«ELSEÂ»"Â«read.param2Â»"Â«ENDIFÂ»)).get(Â«read.positionÂ»).getAttribute("Â«read.attributeÂ»");
-    	'''
+  	  		«read.variable.compileVarReference» = driver.findElements(By.«read.option»(«IF read.param1 !== null»«read.param1.compileVarReference»«ELSE»"«read.param2»"«ENDIF»)).get(«read.position»).«read.attribute»(«IF read.argument !== null»"«read.argument»"«ENDIF»)'''
+    	
+    def dispatch compileFunc(UnCheckAll uncheckAll) '''
+    	List<WebElement> elements = findElements(By.cssSelector("input:checked[type='checkbox']"));  
+    	foreach(Webelement we : elements)
+    		we.click()'''
+    	
+    def dispatch compileMethod(Check check) '''
+    	String labelFor = driver.findElement(By.xpath("//label[contains(text(), «check.param»)]")).getAttribute("for");
+    	driver.findElements(By.cssSelector("input:not(:checked)[(type='checkbox') and (id = labelFor)]")).get(0).click()'''
+    	
+    def dispatch compileFunc(UnCheck uncheck) '''
+    	String labelFor = driver.findElement(By.xpath("//label[contains(text(), «uncheck.param»)]")).getAttribute("for");
+    	driver.findElements(By.cssSelector("input:checked[(type='checkbox') and (id = labelFor)]")).get(0).click()'''
+    	
+    def compileType(Type type) '''«type.type»'''
+    
+    def compileVariable(Variable variable) '''«variable.name»'''
+    
+    def compileVarReference(VarReference ref) '''«ref.value.compileVariable»'''
     	
    	def dispatch compileMethod(Click click) '''
-    	.get(Â«click.positionÂ»).click();
-    	'''
+    	.get(«click.position»).click()'''
     	
     def dispatch compileMethod(Insert insert) '''
-    	.get(Â«insert.positionÂ»).insert(Â«IF insert.ref !== nullÂ»Â«insert.ref.compileVarReferenceÂ»Â«ELSEÂ»"Â«insert.paramÂ»"Â«ENDIFÂ»);
-    	'''
+    	.get(«insert.position»).sendKeys(«IF insert.ref !== null»«insert.ref.compileVarReference»«ELSE»"«insert.param»"«ENDIF»)'''
+    
     
 }

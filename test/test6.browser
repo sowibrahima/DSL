@@ -1,12 +1,12 @@
 // Test 6
 program Test6
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr/rechercher"
 
 findElements id "search" 0 insert "2007"
 
-findElements nameTag "combobox" 0 select partialLinkText "Le mois dernier"
+findElements tagName "combobox" 0 select partialLinkText "Le mois dernier"
 
 findElements partialLinkText "Appliquer les filtres" 0 click
 
-checkContains partialLinkText "Aucun résultat ne correspond à votre recherche"
+print checkContains partialLinkText "Aucun résultat ne correspond à votre recherche"

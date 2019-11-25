@@ -9,7 +9,28 @@ Program:
 ;
 
 FunctionCall:
-	Declaration | Affectation | Get | Method | FindElements |CheckContains | Read
+	Declaration | Affectation | Get | Method | FindElements | CheckContains | Read | Check | UnCheck | UnCheckAll | WaitPageLoad | Print
+;
+
+ 
+UnCheckAll:
+	position=INT value='unCheckAll'
+;
+
+Check:
+	position=INT param=STRING value='check'
+;
+
+UnCheck:
+	position=INT param=STRING value='unCheck'
+;
+
+Print:
+	print='print' (contains=CheckContains | ref=VarReference)
+;
+
+WaitPageLoad:
+	load='waitPageLoad'
 ;
 
 Declaration:
@@ -37,7 +58,7 @@ Expression:
 ;
 
 Method:
-	Click | Insert | {Method} UnCheckAll | Check | UnCheck | Select
+	Click | Insert | Select
 ;
 
 WebDriverType:
@@ -67,17 +88,6 @@ Insert:
 	position=INT 'insert' (param=STRING|ref=VarReference)
 ;
 
-UnCheckAll:
-	'unCheckAll'
-;
-
-Check:
-	position=INT 'check'
-;
-
-UnCheck:
-	position=INT 'unCheck'
-;
 
 Select:
 	position=INT 'select' option=FindElementsOption param=STRING
@@ -87,9 +97,8 @@ CheckContains:
 	'checkContains' attribute=WebElementAttribute (variable=VarReference|param=STRING)
 ;
 
-
 Read :
-	variable=VarReference '=' 'readElement' option=FindElementsOption (param1=VarReference|param2=STRING) position=INT attribute=STRING
+	variable=VarReference '=' 'readElement' option=FindElementsOption (param1=VarReference|param2=STRING) position=INT attribute=STRING (argument=STRING)?
 ;
 
 FindElements:

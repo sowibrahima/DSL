@@ -1,10 +1,9 @@
 // Test 4
 program Test4
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr/rechercher"
-
-findElements id "search" 0 insert "Donald Trump"
-
-findElements partialLinkText "Appliquer les filtres" 0 click
-
-checkContains partialLinkText "Aucun rÃ©sultat ne correspond Ã  votre recherche"
+waitPageLoad
+findElements className "agree-button" 0 click
+findElements id "edit-search-api-fulltext" 0 insert "Donald Trump"
+findElements xpath "//input[@value='Appliquer les filtres']" 0 click
+print checkContains xpath "//*[contains(text(), 'Aucun résultat ne correspond à votre recherche')]"

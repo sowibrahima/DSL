@@ -1,13 +1,16 @@
 // Test 5
 program Test5
-set chrome
+set firefox
 get "http://www.imt-atlantique.fr/fr/formation/trouver-ma-formation"
 
-findElements nameTag "checkbox" clear
+waitPageLoad
+findElements className "agree-button" 0 click
 
-findElements partialLinkText "Anglais" 0 check
-findElements partialLinkText "A domicile" 0 check
-findElements partialLinkText "Temps plein" 0 check
+0 unCheckAll
 
-findElements partialLinkText "Appliquer les critères" 0 click
-checkContains partialLinkText "No found course matching your criteria."
+0 "Anglais" check 
+0 "A domicile" check 
+0 "Temps plein" check 
+
+findElements xpath "//input[@value='Appliquer les filtres']" 0 click
+print checkContains partialLinkText "No found course matching your criteria."
