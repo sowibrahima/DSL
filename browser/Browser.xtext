@@ -25,7 +25,7 @@ Variable:
 ;
 
 VarReference:
-	val=[Variable]
+	value=[Variable]
 ;
 
 Affectation:
@@ -37,7 +37,7 @@ Expression:
 ;
 
 Method:
-	Click | Insert | {Method} Clear | Check | UnCheck | Select
+	Click | Insert | {Method} UnCheckAll | Check | UnCheck | Select
 ;
 
 WebDriverType:
@@ -52,11 +52,11 @@ WebElementAttribute:
 ;
 
 FindElementsOption:
-	'partialText' | 'partialLinkText' | 'id' | 'tagName' | 'altImage' | 'className' | 'name' | 'cssSelector'
+	'partialLinkText' | 'linkText' | 'id' | 'tagName' | 'xpath' | 'className' | 'name' | 'cssSelector'
 ;
 
 Get:
-	'get' url=STRING 
+	'get' (variable=VarReference|param=STRING)
 ;
 
 Click:
@@ -67,8 +67,8 @@ Insert:
 	position=INT 'insert' (param=STRING|ref=VarReference)
 ;
 
-Clear:
-	'clear'
+UnCheckAll:
+	'unCheckAll'
 ;
 
 Check:
@@ -87,8 +87,9 @@ CheckContains:
 	'checkContains' attribute=WebElementAttribute (variable=VarReference|param=STRING)
 ;
 
+
 Read :
-	variable=VarReference '=' 'readElement' option=FindElementsOption value=STRING position=INT param=STRING
+	variable=VarReference '=' 'readElement' option=FindElementsOption (param1=VarReference|param2=STRING) position=INT attribute=STRING
 ;
 
 FindElements:

@@ -15,7 +15,11 @@ import org.xtext.example.browser.Get
 import org.xtext.example.browser.Insert
 import org.xtext.example.browser.Program
 import org.xtext.example.browser.FindElements
-//import org.xtext.example.browser.Clear
+import org.xtext.example.browser.Read
+import org.xtext.example.browser.Type
+import org.xtext.example.browser.Variable
+import org.xtext.example.browser.VarReference
+
 /**
  * Generates code from your model files on save.
  * 
@@ -54,24 +58,33 @@ class BrowserGenerator extends AbstractGenerator {
     	'''
     
 	def dispatch compileFunc(Declaration declaration) '''
-    	«declaration.type» «declaration.variable»;
+    	«declaration.type.compileType» «declaration.variable.compileVariable»;
     	'''
     	
+    def compileType(Type type) '''«type.type»'''
+    
+    def compileVariable(Variable variable) '''«variable.name»'''
+    
+    def compileVarReference(VarReference ref) '''«ref.value.compileVariable»'''
+    	
 	def dispatch compileFunc(Affectation affectation) '''
-    	«affectation.variable» = «affectation.expr»;
+    	«affectation.variable.compileVarReference» = «affectation.expr»;
     	'''
     	
     def dispatch compileFunc(Get get) '''
-    	driver.get("«get.url»");
+    	driver.get(«IF get.variable !== null»«get.variable.compileVarReference»«ELSE»"«get.param»"«ENDIF»);
     	'''
   	
-  	
   	def dispatch compileFunc(CheckContains contains) '''
-    	driver.findElement(By.«contains.attribute»(«IF contains.variable !== null»«contains.variable»«ELSE»"«contains.param»"«ENDIF»));	    
+    	driver.findElement(By.«contains.attribute»(«IF contains.variable !== null»«contains.variable.compileVarReference»«ELSE»"«contains.param»"«ENDIF»));	    
     	'''
   	
   	def dispatch compileFunc(FindElements elem) '''
-    	driver.findElements(By.«elem.option»(«IF elem.variable !== null»«elem.variable»«ELSE»"«elem.param»"«ENDIF»))«elem.method.compileMethod»
+    	driver.findElements(By.«elem.option»(«IF elem.variable !== null»«elem.variable.compileVarReference»«ELSE»"«elem.param»"«ENDIF»))«elem.method.compileMethod»
+    	'''
+    	
+  	def dispatch compileFunc(Read read) '''
+  		«read.variable.compileVarReference» = driver.findElements(By.«read.option»(«IF read.param1 !== null»«read.param1.compileVarReference»«ELSE»"«read.param2»"«ENDIF»)).get(«read.position»).getAttribute("«read.attribute»");
     	'''
     	
    	def dispatch compileMethod(Click click) '''
@@ -79,13 +92,7 @@ class BrowserGenerator extends AbstractGenerator {
     	'''
     	
     def dispatch compileMethod(Insert insert) '''
-    	.get(«insert.position»).insert(«IF insert.ref !== null»«insert.ref»«ELSE»"«insert.param»"«ENDIF»);
+    	.get(«insert.position»).insert(«IF insert.ref !== null»«insert.ref.compileVarReference»«ELSE»"«insert.param»"«ENDIF»);
     	'''
-    	
-    /**
-    def dispatch compileMethod(Clear clear) '''
-    	.get(«clear.position»).clear();
-    	'''
-	*/
     
 }
